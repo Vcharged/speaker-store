@@ -8,4 +8,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #3f72af 0%, #ffd700 100%, #ff6f61 80%);
+  color: #1a1a2e;
+  min-height: 100vh;
 }

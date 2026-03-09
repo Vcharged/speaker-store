@@ -1,7 +1,8 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BookingStatus } from '@prisma/client';
+// import { BookingStatus } from '@prisma/client'; // Removed BookingStatus import
 import { PrismaService } from '../prisma/prisma.service';
+import { BookingStatus } from '@prisma/client';
 
 @Injectable()
 export class BookingsService {
@@ -10,24 +11,24 @@ export class BookingsService {
     private readonly configService: ConfigService,
   ) {}
 
-  async createBooking(userId: string, carId: string, start: Date, end: Date) {
+  async createBooking(userId: string, productId: string, start: Date, end: Date) {
     if (end <= start) {
       throw new BadRequestException('End date must be after start date');
     }
 
-    const car = await this.prisma.car.findUnique({ where: { id: carId } });
-    if (!car) {
-      throw new NotFoundException('Car not found');
+    const product = await this.prisma.product.findUnique({ where: { id: productId } });
+    if (!product) {
+      throw new NotFoundException('Product not found');
     }
 
-    if (!car.isAvailable) {
-      throw new BadRequestException('Car is not available');
+    if (!product.isAvailable) {
+      throw new BadRequestException('Product is not available');
     }
 
     const conflict = await this.prisma.booking.findFirst({
       where: {
-        carId,
-        status: { in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] },
+        productId,
+        status: { in: ['PENDING', 'CONFIRMED'] },
         AND: [
           { startDate: { lte: end } },
           { endDate: { gte: start } },
@@ -36,43 +37,35 @@ export class BookingsService {
     });
 
     if (conflict) {
-      throw new BadRequestException('Car is already booked for these dates');
+      throw new BadRequestException('Product is already booked for these dates');
     }
 
     const days = Math.max(1, Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
-    const totalPrice = days * car.pricePerDay;
+    const totalPrice = days * product.price;
 
-    const user = await this.prisma.user.findUnique({ where: { id: userId } });
-
-    const booking = await this.prisma.booking.create({
+    return this.prisma.booking.create({
       data: {
         userId,
-        carId,
+        productId,
         startDate: start,
         endDate: end,
         totalPrice,
         status: BookingStatus.PENDING,
       },
     });
-
-    await this.notifyAdmin(
-      `*New booking* 🚗\n*Booking ID:* ${booking.id}\n*Car:* ${car.brand} ${car.model}\n*User:* ${user?.email || 'Unknown'}\n*Phone:* ${user?.phone || 'Unknown'}\n*Dates:* ${start.toDateString()} - ${end.toDateString()}\n*Total:* $${totalPrice}\n*Status:* PENDING`,
-    );
-
-    return booking;
   }
 
   findUserBookings(userId: string) {
     return this.prisma.booking.findMany({
       where: { userId },
-      include: { car: true },
+      include: { product: true },
       orderBy: { startDate: 'desc' },
     });
   }
 
   findAllBookings() {
     return this.prisma.booking.findMany({
-      include: { car: true, user: true },
+      include: { product: true, user: true },
       orderBy: { startDate: 'desc' },
     });
   }
@@ -80,7 +73,7 @@ export class BookingsService {
   async updateStatus(bookingId: string, status: BookingStatus) {
     const booking = await this.prisma.booking.findUnique({
       where: { id: bookingId },
-      include: { car: true, user: true },
+      include: { product: true, user: true },
     });
     if (!booking) {
       throw new NotFoundException('Booking not found');
@@ -93,7 +86,7 @@ export class BookingsService {
 
     const statusIcon = status === BookingStatus.PAID ? '💳' : '✅';
     await this.notifyAdmin(
-      `*Booking updated* ${statusIcon}\n*Booking ID:* ${booking.id}\n*Car:* ${booking.car.brand} ${booking.car.model}\n*User:* ${booking.user.email}\n*Phone:* ${booking.user.phone || 'Unknown'}\n*Status:* ${status}`,
+      `*Booking updated* ${statusIcon}\n*Booking ID:* ${booking.id}\n*Product:* ${booking.product.brand} ${booking.product.model}\n*User:* ${booking.user.email}\n*Phone:* ${booking.user.phone || 'Unknown'}\n*Status:* ${status}`,
     );
 
     return updated;
@@ -102,7 +95,7 @@ export class BookingsService {
   async cancelBooking(userId: string, bookingId: string) {
     const booking = await this.prisma.booking.findUnique({
       where: { id: bookingId },
-      include: { car: true, user: true },
+      include: { product: true, user: true },
     });
     if (!booking) {
       throw new NotFoundException('Booking not found');
@@ -120,7 +113,7 @@ export class BookingsService {
     });
 
     await this.notifyAdmin(
-      `*Booking cancelled* ❌\n*Booking ID:* ${booking.id}\n*Car:* ${booking.car.brand} ${booking.car.model}\n*User:* ${booking.user.email}\n*Phone:* ${booking.user.phone || 'Unknown'}`,
+      `*Booking cancelled* ❌\n*Booking ID:* ${booking.id}\n*Product:* ${booking.product.brand} ${booking.product.model}\n*User:* ${booking.user.email}\n*Phone:* ${booking.user.phone || 'Unknown'}`,
     );
 
     return updated;

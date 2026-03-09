@@ -9,6 +9,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // 👇 ДОБАВЬ ЭТО
+  app.setGlobalPrefix('api');
+
   const uploadsPath = join(process.cwd(), 'uploads');
   if (!existsSync(uploadsPath)) {
     mkdirSync(uploadsPath, { recursive: true });
@@ -29,8 +32,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Car Rental API')
-    .setDescription('API documentation for the car rental platform')
+    .setTitle('Music Store API')
+    .setDescription('API documentation for the music store platform (speakers & instruments)')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

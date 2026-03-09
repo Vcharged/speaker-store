@@ -1,4 +1,4 @@
-const { PrismaClient, Role } = require('@prisma/client');
+const { PrismaClient, Role, ProductCategory } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
@@ -32,44 +32,80 @@ async function main() {
     });
   }
 
-  const carCount = await prisma.car.count();
-  if (carCount === 0) {
-    await prisma.car.createMany({
+  const productCount = await prisma.product.count();
+  if (productCount === 0) {
+    await prisma.product.createMany({
       data: [
         {
-          brand: 'Tesla',
-          model: 'Model 3',
-          color: 'White',
-          description: 'Electric sedan with autopilot and premium interior.',
+          category: ProductCategory.SPEAKER,
+          brand: 'JBL',
+          model: 'Flip 6',
+          description: 'Портативная Bluetooth-колонка с мощным звуком и водонепроницаемостью.',
           photoUrl: '',
-          pricePerDay: 120,
+          price: 8999,
           isAvailable: true,
         },
         {
-          brand: 'BMW',
-          model: 'X5',
-          color: 'Black',
-          description: 'Luxury SUV with panoramic roof and driver assist.',
+          category: ProductCategory.SPEAKER,
+          brand: 'Sony',
+          model: 'SRS-XB33',
+          description: 'Мощная беспроводная колонка с EXTRA BASS и подсветкой.',
           photoUrl: '',
-          pricePerDay: 150,
+          price: 12999,
           isAvailable: true,
         },
         {
-          brand: 'Audi',
-          model: 'A4',
-          color: 'Silver',
-          description: 'Comfortable sedan with smooth ride and great handling.',
+          category: ProductCategory.SPEAKER,
+          brand: 'Bose',
+          model: 'SoundLink Revolve',
+          description: '360° звук с глубокими басами и впечатляющей громкостью.',
           photoUrl: '',
-          pricePerDay: 110,
+          price: 15999,
           isAvailable: true,
         },
         {
-          brand: 'Mercedes-Benz',
-          model: 'C-Class',
-          color: 'Blue',
-          description: 'Elegant sedan with premium finishes.',
+          category: ProductCategory.INSTRUMENT,
+          brand: 'Yamaha',
+          model: 'F310',
+          description: 'Акустическая гитара для начинающих с теплым звуком.',
           photoUrl: '',
-          pricePerDay: 140,
+          price: 7999,
+          isAvailable: true,
+        },
+        {
+          category: ProductCategory.INSTRUMENT,
+          brand: 'Fender',
+          model: 'Stratocaster',
+          description: 'Легендарная электрогитара для рока и блюза.',
+          photoUrl: '',
+          price: 45999,
+          isAvailable: true,
+        },
+        {
+          category: ProductCategory.INSTRUMENT,
+          brand: 'Casio',
+          model: 'CTK-3500',
+          description: 'Цифровое пианино с 61 клавишей и обучающими функциями.',
+          photoUrl: '',
+          price: 11999,
+          isAvailable: true,
+        },
+        {
+          category: ProductCategory.INSTRUMENT,
+          brand: 'Roland',
+          model: 'TD-17KV',
+          description: 'Электронная ударная установка с реалистичным звучанием.',
+          photoUrl: '',
+          price: 89999,
+          isAvailable: true,
+        },
+        {
+          category: ProductCategory.SPEAKER,
+          brand: 'Marshall',
+          model: 'Acton II',
+          description: 'Классическая колонка с винтажным дизайном и мощным звуком.',
+          photoUrl: '',
+          price: 24999,
           isAvailable: true,
         },
       ],

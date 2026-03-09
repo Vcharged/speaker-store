@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/AdminDashboard';
-import BookingForm from './pages/BookingForm';
-import CarList from './pages/CarList';
+import AdminProductsDashboard from './pages/Products/AdminProductsDashboard';
+import ProductBookingForm from './pages/Products/ProductBookingForm';
+import ProductList from './pages/Products/ProductList';
 import Login from './pages/Login';
 import MyBookings from './pages/MyBookings';
 import Profile from './pages/Profile';
@@ -15,8 +15,8 @@ const App = () => {
       <Navbar />
       <main className="mx-auto w-full max-w-6xl px-4 py-10">
         <Routes>
-          <Route path="/" element={<CarList />} />
-          <Route path="/cars" element={<CarList />} />
+          <Route path="/" element={<ProductList />} />
+          <Route path="/products" element={<ProductList />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -28,10 +28,10 @@ const App = () => {
             }
           />
           <Route
-            path="/book/:carId"
+            path="/book/:productId"
             element={
               <ProtectedRoute>
-                <BookingForm />
+                <ProductBookingForm />
               </ProtectedRoute>
             }
           />
@@ -44,10 +44,10 @@ const App = () => {
             }
           />
           <Route
-            path="/admin"
+            path="/admin/products"
             element={
               <ProtectedRoute requiredRole="ADMIN">
-                <AdminDashboard />
+                <AdminProductsDashboard />
               </ProtectedRoute>
             }
           />

@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -19,7 +18,7 @@ export class BookingsController {
   create(@Req() req: { user: { id: string } }, @Body() dto: CreateBookingDto) {
     const start = new Date(dto.startDate);
     const end = new Date(dto.endDate);
-    return this.bookingsService.createBooking(req.user.id, dto.carId, start, end);
+    return this.bookingsService.createBooking(req.user.id, dto.productId, start, end);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,7 +29,7 @@ export class BookingsController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @Get()
   allBookings() {
@@ -39,7 +38,7 @@ export class BookingsController {
 
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   updateStatus(@Param('id') id: string, @Body() dto: UpdateBookingStatusDto) {
     return this.bookingsService.updateStatus(id, dto.status);

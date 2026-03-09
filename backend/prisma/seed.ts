@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -18,58 +18,58 @@ async function main() {
       data: {
         email,
         password: hash,
-        role: Role.ADMIN,
+          role: 'ADMIN',
         firstName: 'Admin',
         lastName: 'User',
         birthDate: new Date('1990-01-01'),
         phone: '+10000000000',
       },
     });
-  } else if (existing.role !== Role.ADMIN) {
-    await prisma.user.update({
-      where: { email },
-      data: { role: Role.ADMIN },
-    });
+  } else if (existing.role !== 'ADMIN') {
+      await prisma.user.update({
+        where: { email },
+        data: { role: 'ADMIN' },
+      });
   }
 
-  const carCount = await prisma.car.count();
-  if (carCount === 0) {
-    await prisma.car.createMany({
+  const productCount = await prisma.product.count();
+  if (productCount === 0) {
+    await prisma.product.createMany({
       data: [
         {
-          brand: 'Tesla',
-          model: 'Model 3',
-          color: 'White',
-          description: 'Electric sedan with autopilot and premium interior.',
-          photoUrl: 'https://images.pexels.com/photos/799443/pexels-photo-799443.jpeg',
-          pricePerDay: 120,
+          category: 'SPEAKER',
+          brand: 'JBL',
+          model: 'Charge 5',
+          description: 'Portable Bluetooth speaker with deep bass.',
+          photoUrl: '',
+          price: 12000,
           isAvailable: true,
         },
         {
-          brand: 'BMW',
-          model: 'X5',
-          color: 'Black',
-          description: 'Luxury SUV with panoramic roof and driver assist.',
-          photoUrl: 'https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg',
-          pricePerDay: 150,
+          category: 'INSTRUMENT',
+          brand: 'Yamaha',
+          model: 'P-125',
+          description: 'Digital piano with authentic feel.',
+          photoUrl: '',
+          price: 45000,
           isAvailable: true,
         },
         {
-          brand: 'Audi',
-          model: 'A4',
-          color: 'Silver',
-          description: 'Comfortable sedan with smooth ride and great handling.',
-          photoUrl: 'https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg',
-          pricePerDay: 110,
+          category: 'SPEAKER',
+          brand: 'Sony',
+          model: 'SRS-XB43',
+          description: 'Extra bass wireless speaker.',
+          photoUrl: '',
+          price: 15000,
           isAvailable: true,
         },
         {
-          brand: 'Mercedes-Benz',
-          model: 'C-Class',
-          color: 'Blue',
-          description: 'Elegant sedan with premium finishes.',
-          photoUrl: 'https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg',
-          pricePerDay: 140,
+          category: 'INSTRUMENT',
+          brand: 'Fender',
+          model: 'Stratocaster',
+          description: 'Legendary electric guitar.',
+          photoUrl: '',
+          price: 70000,
           isAvailable: true,
         },
       ],

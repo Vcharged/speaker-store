@@ -1,7 +1,6 @@
-import { IsEnum } from 'class-validator';
-import { BookingStatus } from '@prisma/client';
+import { IsString } from 'class-validator';
 
 export class UpdateBookingStatusDto {
-  @IsEnum(BookingStatus)
-  status: BookingStatus;
+  @IsString()
+  status: 'PENDING' | 'CONFIRMED' | 'PAID' | 'CANCELLED';
 }

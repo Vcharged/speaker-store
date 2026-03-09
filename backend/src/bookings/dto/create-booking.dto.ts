@@ -2,7 +2,7 @@ import { IsDateString, IsUUID } from 'class-validator';
 
 export class CreateBookingDto {
   @IsUUID()
-  carId: string;
+  productId: string;
 
   @IsDateString()
   startDate: string;

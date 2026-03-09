@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
+import { Role } from '@prisma/client';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -91,7 +91,7 @@ export class AuthService {
   private sanitizeUser(user: {
     id: string;
     email: string;
-    role: Role;
+    role: string;
     createdAt: Date;
     firstName: string;
     lastName: string;

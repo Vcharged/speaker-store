@@ -1,6 +1,6 @@
-# Car Rental
+# Music Instruments Store
 
-Production-ready full-stack car rental app.
+Production-ready full-stack music instruments and speakers marketplace.
 
 ## Services
 - Backend: NestJS + Prisma

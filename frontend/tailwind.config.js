@@ -4,9 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#0c0f14',
-        stone: '#f6f7fb',
-        accent: '#2d6cdf'
+        ink: '#1a1a2e', // глубокий синий
+        stone: '#e7eaf6', // светлый голубой
+        accent: '#ff6f61', // яркий коралловый
+        highlight: '#3f72af', // насыщенный синий
+        bgMusic: '#f9f7f7', // светлый фон
+        cardMusic: '#dbe2ef', // карточки
+        gold: '#ffd700', // акцент
       }
     }
   },

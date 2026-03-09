@@ -32,31 +32,36 @@ model User {
   bookings  Booking[]
 }
 
-model Car {
-  id          String    @id @default(uuid())
+enum ProductCategory {
+  SPEAKER
+  INSTRUMENT
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  category    ProductCategory
   brand       String
   model       String
-  color       String    @default("Black")
-  description String    @default("")
-  photoUrl    String    @default("")
-  pricePerDay Float
-  isAvailable Boolean   @default(true)
-  createdAt   DateTime  @default(now())
+  description String         @default("")
+  photoUrl    String         @default("")
+  price       Float
+  isAvailable Boolean        @default(true)
+  createdAt   DateTime       @default(now())
   bookings    Booking[]
 }
 
 model Booking {
   id         String        @id @default(uuid())
   userId     String
-  carId      String
+  productId  String
   startDate  DateTime
   endDate    DateTime
   totalPrice Float
   status     BookingStatus @default(PENDING)
 
-  user User @relation(fields: [userId], references: [id])
-  car  Car  @relation(fields: [carId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   @@index([userId])
-  @@index([carId])
+  @@index([productId])
 }
