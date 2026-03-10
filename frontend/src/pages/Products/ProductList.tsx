@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
+import { addToCart } from '../../lib/cart';
 
 export type Product = {
   id: string;
@@ -20,6 +21,7 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<'all' | 'SPEAKER' | 'INSTRUMENT'>('all');
+  const [justAddedId, setJustAddedId] = useState<string | null>(null);
 
   const getImageUrl = (category: string, id: string, photoUrl?: string) =>
     photoUrl && photoUrl.length > 0
@@ -42,6 +44,26 @@ const ProductList = () => {
 
     loadProducts();
   }, [filter]);
+
+  const handleBuy = (product: Product) => {
+    addToCart(
+      {
+        id: product.id,
+        category: product.category,
+        brand: product.brand,
+        model: product.model,
+        description: product.description,
+        photoUrl: product.photoUrl,
+        price: product.price,
+      },
+      1,
+    );
+
+    setJustAddedId(product.id);
+    setTimeout(() => {
+      setJustAddedId((current) => (current === product.id ? null : current));
+    }, 700);
+  };
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-64">
@@ -95,7 +117,9 @@ const ProductList = () => {
         {products.map((product, index) => (
           <div 
             key={product.id} 
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden group animate-slide-up"
+            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden group animate-slide-up ${
+              justAddedId === product.id ? 'ring-2 ring-secondary/60 animate-pulse' : ''
+            }`}
             style={{ animationDelay: `${index * 100}ms` }}
           >
             {/* Product Image */}
@@ -160,12 +184,13 @@ const ProductList = () => {
               {/* Action Button */}
               <div className="pt-2">
                 {user && product.isAvailable ? (
-                  <Link 
-                    to={`/book/${product.id}`}
+                  <button
+                    type="button"
+                    onClick={() => handleBuy(product)}
                     className="block w-full py-2 sm:py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold text-center hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                   >
                     Купить
-                  </Link>
+                  </button>
                 ) : !user ? (
                   <div className="text-center">
                     <Link 

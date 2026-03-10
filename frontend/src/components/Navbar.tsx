@@ -33,12 +33,6 @@ const Navbar = () => {
             {user && (
               <>
                 <Link 
-                  to="/bookings" 
-                  className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
-                >
-                  Мои бронирования
-                </Link>
-                <Link 
                   to="/profile" 
                   className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
                 >
@@ -69,7 +63,7 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/login"
-                  className="px-3 sm:px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="px-3 sm:px-4 py-2 bg-ink text-white rounded-full text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
                   Войти
                 </Link>
