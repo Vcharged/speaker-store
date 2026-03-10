@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export type Product = {
   id: string;
-  category: 'speaker' | 'instrument';
+  category: 'SPEAKER' | 'INSTRUMENT';
   brand: string;
   model: string;
   description: string;
@@ -19,7 +19,7 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState<'all' | 'speaker' | 'instrument'>('all');
+  const [filter, setFilter] = useState<'all' | 'SPEAKER' | 'INSTRUMENT'>('all');
 
   const getImageUrl = (category: string, id: string, photoUrl?: string) =>
     photoUrl && photoUrl.length > 0
@@ -30,7 +30,7 @@ const ProductList = () => {
     const loadProducts = async () => {
       try {
         const response = await api.get('/products', {
-          params: filter !== 'all' ? { category: filter } : {}
+          params: filter !== 'all' ? { category: filter.toLowerCase() } : {}
         });
         setProducts(Array.isArray(response.data) ? response.data : []);
       } catch {
@@ -72,8 +72,8 @@ const ProductList = () => {
       <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
         {[
           { value: 'all', label: 'Все товары', icon: '🎵' },
-          { value: 'speaker', label: 'Колонки', icon: '🔊' },
-          { value: 'instrument', label: 'Инструменты', icon: '🎸' }
+          { value: 'SPEAKER', label: 'Колонки', icon: '🔊' },
+          { value: 'INSTRUMENT', label: 'Инструменты', icon: '🎸' }
         ].map(({ value, label, icon }) => (
           <button
             key={value}
@@ -130,14 +130,14 @@ const ProductList = () => {
             <div className="p-4 sm:p-6 space-y-3">
               <div className="flex items-center justify-between">
                 <span className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${
-                  product.category === 'speaker' 
+                  product.category === 'SPEAKER' 
                     ? 'bg-purple-100 text-purple-800' 
                     : 'bg-blue-100 text-blue-800'
                 }`}>
                   <span className="mr-1">
-                    {product.category === 'speaker' ? '🔊' : '🎸'}
+                    {product.category === 'SPEAKER' ? '🔊' : '🎸'}
                   </span>
-                  {product.category === 'speaker' ? 'Колонка' : 'Инструмент'}
+                  {product.category === 'SPEAKER' ? 'Колонка' : 'Инструмент'}
                 </span>
               </div>
 
