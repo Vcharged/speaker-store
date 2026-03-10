@@ -44,13 +44,30 @@ export function addToCart(product: CartProduct, quantity = 1) {
     items.push({ product, quantity, addedAt: new Date().toISOString() });
   }
   writeCart(items);
+
+  // уведомляем остальные компоненты (например, Navbar) об изменении корзины
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cart-updated'));
+  }
 }
 
 export function removeFromCart(productId: string) {
   writeCart(readCart().filter((i) => i.product.id !== productId));
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cart-updated'));
+  }
 }
 
 export function clearCart() {
   writeCart([]);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cart-updated'));
+  }
+}
+
+export function getCartCount(): number {
+  return readCart().reduce((sum, item) => sum + item.quantity, 0);
 }
 

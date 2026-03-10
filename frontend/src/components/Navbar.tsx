@@ -1,8 +1,28 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { getCartCount } from '../lib/cart';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const [cartCount, setCartCount] = useState(0);
+  const [cartPulse, setCartPulse] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      setCartCount(getCartCount());
+      setCartPulse(true);
+      setTimeout(() => setCartPulse(false), 600);
+    };
+
+    update();
+    window.addEventListener('cart-updated', update);
+    window.addEventListener('storage', update);
+    return () => {
+      window.removeEventListener('cart-updated', update);
+      window.removeEventListener('storage', update);
+    };
+  }, []);
 
   return (
     <header className="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-50">
@@ -26,9 +46,16 @@ const Navbar = () => {
             </Link>
             <Link
               to="/cart"
-              className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
+              className={`relative text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform ${
+                cartPulse ? 'animate-bounce' : ''
+              }`}
             >
               Корзина
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-3 min-w-[1.5rem] px-1 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center shadow">
+                  {cartCount}
+                </span>
+              )}
             </Link>
             {user && (
               <>
@@ -63,7 +90,7 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/login"
-                  className="px-3 sm:px-4 py-2 bg-ink text-white rounded-full text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="px-3 sm:px-4 py-2 bg-black text-white rounded-full text-sm font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 border border-white/80"
                 >
                   Войти
                 </Link>
