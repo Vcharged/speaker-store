@@ -1,12 +1,20 @@
 {$DOMAIN} {
   encode gzip zstd
 
-  handle_path /api/* {
+  # API запросы пробрасываем как есть, без обрезания /api
+  handle /api/* {
     reverse_proxy backend:3000
   }
-  reverse_proxy /uploads/* backend:3000
 
-  root * /srv
-  try_files {path} /index.html
-  file_server
+  # Отдача загруженных файлов
+  handle /uploads/* {
+    reverse_proxy backend:3000
+  }
+
+  # Всё остальное — SPA фронтенд
+  handle {
+    root * /srv
+    try_files {path} /index.html
+    file_server
+  }
 }
