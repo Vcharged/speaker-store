@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import api from '../../lib/api';
 
 export type Product = {
@@ -22,6 +22,18 @@ export type Booking = {
   product: { brand: string; model: string };
 };
 
+export type AdminUser = {
+  id: string;
+  email: string;
+  role: 'ADMIN' | 'USER';
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  phone: string;
+  createdAt: string;
+  bookings: { id: string; totalPrice: number; status: Booking['status']; startDate: string; endDate: string }[];
+};
+
 const getImageUrl = (category: string, brand: string, model: string, id: string, photoUrl?: string) =>
   photoUrl && photoUrl.length > 0
     ? photoUrl
@@ -30,6 +42,7 @@ const getImageUrl = (category: string, brand: string, model: string, id: string,
 const AdminProductsDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [category, setCategory] = useState<'SPEAKER' | 'INSTRUMENT'>('SPEAKER');
   const [brand, setBrand] = useState('');
@@ -44,7 +57,18 @@ const AdminProductsDashboard = () => {
   useEffect(() => {
     api.get('/products').then(res => setProducts(res.data));
     api.get('/bookings').then(res => setBookings(res.data));
+    api.get('/users').then(res => setUsers(res.data));
   }, []);
+
+  const userStats = useMemo(
+    () =>
+      users.map((u) => {
+        const ordersCount = u.bookings.length;
+        const totalSpent = u.bookings.reduce((sum, b) => sum + b.totalPrice, 0);
+        return { ...u, ordersCount, totalSpent };
+      }),
+    [users],
+  );
 
   const handleCreateProduct = async () => {
     try {
@@ -243,6 +267,48 @@ const AdminProductsDashboard = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Список пользователей */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold mb-4 text-accent">Пользователи</h2>
+        <div className="overflow-x-auto bg-cardMusic rounded-xl shadow-lg">
+          <table className="w-full table-auto">
+            <thead className="bg-highlight text-white">
+              <tr>
+                <th className="p-2 text-left">Email</th>
+                <th className="p-2 text-left">Имя</th>
+                <th className="p-2 text-left">Телефон</th>
+                <th className="p-2 text-left">Роль</th>
+                <th className="p-2 text-right">Покупок</th>
+                <th className="p-2 text-right">Сумма (MDL)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userStats.map((user) => (
+                <tr key={user.id} className="border-b border-bgMusic">
+                  <td className="p-2 text-ink">{user.email}</td>
+                  <td className="p-2 text-ink">
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td className="p-2 text-ink">{user.phone}</td>
+                  <td className="p-2 text-ink">{user.role}</td>
+                  <td className="p-2 text-right text-accent font-semibold">{user.ordersCount}</td>
+                  <td className="p-2 text-right text-gold font-semibold">
+                    {Math.round(user.totalSpent * 0.8).toLocaleString()} MDL
+                  </td>
+                </tr>
+              ))}
+              {userStats.length === 0 && (
+                <tr>
+                  <td className="p-4 text-center text-gray" colSpan={6}>
+                    Пользователи пока не найдены
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

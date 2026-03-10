@@ -66,4 +66,29 @@ export class UsersService {
       },
     });
   }
+
+  findAllWithBookings() {
+    return this.prisma.user.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        firstName: true,
+        lastName: true,
+        birthDate: true,
+        phone: true,
+        bookings: {
+          select: {
+            id: true,
+            totalPrice: true,
+            status: true,
+            startDate: true,
+            endDate: true,
+          },
+        },
+      },
+    });
+  }
 }

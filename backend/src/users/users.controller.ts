@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 import { UsersService } from './users.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -8,6 +10,14 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @ApiBearerAuth()
+  @Get()
+  getAllForAdmin() {
+    return this.usersService.findAllWithBookings();
+  }
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
