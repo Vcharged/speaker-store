@@ -11,7 +11,7 @@ import Register from './pages/Register';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-light flex flex-col">
+    <div className="min-h-screen bg-light flex flex-col overflow-hidden">
       <Navbar />
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         <Routes>

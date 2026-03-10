@@ -151,7 +151,7 @@ const ProductList = () => {
 
               <div className="flex items-center justify-between pt-2">
                 <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {product.price.toLocaleString()} ₽
+                  {Math.round(product.price * 0.8).toLocaleString()} MDL
                 </span>
               </div>
 

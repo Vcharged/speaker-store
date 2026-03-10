@@ -208,7 +208,7 @@ const AdminProductsDashboard = () => {
               <h3 className="text-xl font-bold text-highlight mb-1">{product.brand} {product.model}</h3>
               <p className="text-sm text-ink mb-2">{product.description}</p>
               <span className="block mb-2 text-gold font-semibold">{product.category === 'speaker' ? 'Колонка' : 'Инструмент'}</span>
-              <span className="block mb-2 font-semibold text-accent">Цена: {product.price} ₽</span>
+              <span className="block mb-2 font-semibold text-accent">Цена: {Math.round(product.price * 0.8)} MDL</span>
               <span className={product.isAvailable ? 'text-green-600' : 'text-red-600 font-bold'}>
                 {product.isAvailable ? 'В наличии' : 'Нет в наличии'}
               </span>
@@ -222,7 +222,7 @@ const AdminProductsDashboard = () => {
       </div>
       {/* Список бронирований */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-accent">Бронирования</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-accent">Покупки</h2>
         <table className="w-full table-auto bg-cardMusic rounded-xl shadow-lg">
           <thead className="bg-highlight text-white">
             <tr>
@@ -240,7 +240,7 @@ const AdminProductsDashboard = () => {
                 <td className="p-2 text-ink">{booking.user.email}</td>
                 <td className="p-2">{booking.startDate} - {booking.endDate}</td>
                 <td className="p-2 text-accent font-bold">{booking.status}</td>
-                <td className="p-2 text-gold font-semibold">{booking.totalPrice} ₽</td>
+                <td className="p-2 text-gold font-semibold">{Math.round(booking.totalPrice * 0.8)} MDL</td>
               </tr>
             ))}
           </tbody>
