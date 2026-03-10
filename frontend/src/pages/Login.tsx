@@ -46,8 +46,11 @@ const Login = () => {
           />
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
-        <button type="submit" className="w-full rounded-lg bg-ink px-4 py-2 text-white">
-          Login
+        <button
+          type="submit"
+          className="w-full rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-3 text-white font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 text-center"
+        >
+          Войти
         </button>
       </form>
     </div>

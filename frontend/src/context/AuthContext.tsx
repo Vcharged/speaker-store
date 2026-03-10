@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import api from '../lib/api';
 import { clearTokens, getAccessToken, setTokens } from '../lib/auth';
+import { clearCart } from '../lib/cart';
 
 export type User = {
   id: string;
@@ -84,6 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     clearTokens();
     setUser(null);
+    clearCart();
   };
 
   return (
