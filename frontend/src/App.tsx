@@ -11,9 +11,9 @@ import Register from './pages/Register';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-stone text-ink">
+    <div className="min-h-screen bg-light flex flex-col">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-4 py-10">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         <Routes>
           <Route path="/" element={<ProductList />} />
           <Route path="/products" element={<ProductList />} />
@@ -53,6 +53,25 @@ const App = () => {
           />
         </Routes>
       </main>
+      <footer className="bg-dark text-light py-6 sm:py-8 mt-auto">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="mb-4">
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                🎵 Music Store
+              </span>
+            </div>
+            <p className="text-gray text-sm sm:text-base mb-2">
+              Магазин музыкальных инструментов и колонок
+            </p>
+            <div className="flex justify-center space-x-4 text-xs sm:text-sm text-gray">
+              <span>© 2026 Music Store</span>
+              <span>•</span>
+              <span>Все права защищены</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

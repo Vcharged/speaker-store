@@ -5,45 +5,87 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="border-b border-highlight bg-cardMusic">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-        <Link to="/" className="text-lg font-semibold text-highlight flex items-center gap-2">
-          🎵 Music Store
-        </Link>
-        <nav className="flex items-center gap-4 text-sm font-medium">
-          <Link to="/products" className="hover:text-accent text-highlight">
-            Товары
+    <header className="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-50">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 sm:h-20">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 group">
+            <span className="text-2xl sm:text-3xl transform transition-transform group-hover:scale-110">🎵</span>
+            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Music Store
+            </span>
           </Link>
-          {user && (
-            <Link to="/bookings" className="hover:text-accent text-highlight">
-              Мои бронирования
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+            <Link 
+              to="/products" 
+              className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
+            >
+              Товары
             </Link>
-          )}
-          {user && (
-            <Link to="/profile" className="hover:text-accent text-highlight">
-              Профиль
-            </Link>
-          )}
-          {user?.role === 'ADMIN' && (
-            <Link to="/admin/products" className="hover:text-accent text-highlight font-bold">
-              Админ-панель
-            </Link>
-          )}
-          {user ? (
-            <button onClick={logout} className="rounded-full border border-highlight px-4 py-1.5 text-highlight hover:bg-accent hover:text-white transition">
-              Выйти
+            {user && (
+              <>
+                <Link 
+                  to="/bookings" 
+                  className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
+                >
+                  Мои бронирования
+                </Link>
+                <Link 
+                  to="/profile" 
+                  className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
+                >
+                  Профиль
+                </Link>
+              </>
+            )}
+            {user?.role === 'ADMIN' && (
+              <Link 
+                to="/admin/products" 
+                className="text-gray hover:text-secondary font-bold transition-colors duration-200 hover:scale-105 transform"
+              >
+                Админ-панель
+              </Link>
+            )}
+          </nav>
+
+          {/* Auth Buttons */}
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            {user ? (
+              <button 
+                onClick={logout}
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-error to-red-500 text-white rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+              >
+                Выйти
+              </button>
+            ) : (
+              <>
+                <Link 
+                  to="/login"
+                  className="px-3 sm:px-4 py-2 border-2 border-primary text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-200 transform hover:scale-105"
+                >
+                  Войти
+                </Link>
+                <Link 
+                  to="/register"
+                  className="px-3 sm:px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  Регистрация
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button className="text-gray hover:text-primary">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
             </button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link to="/login" className="rounded-full border border-highlight px-4 py-1.5 text-highlight hover:bg-accent hover:text-white transition">
-                Войти
-              </Link>
-              <Link to="/register" className="rounded-full bg-accent px-4 py-1.5 text-white hover:bg-gold transition">
-                Регистрация
-              </Link>
-            </div>
-          )}
-        </nav>
+          </div>
+        </div>
       </div>
     </header>
   );

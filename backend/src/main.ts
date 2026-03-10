@@ -19,8 +19,18 @@ async function bootstrap() {
   app.use('/uploads', express.static(uploadsPath));
 
   app.enableCors({
-    origin: true,
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://167.172.169.150',
+      'http://music-vlad.online',
+      'https://music-vlad.online',
+      'http://speaker-store.ru',
+      'https://speaker-store.ru'
+    ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(
