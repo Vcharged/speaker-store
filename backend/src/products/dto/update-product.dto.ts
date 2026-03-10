@@ -1,9 +1,10 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsEnum } from 'class-validator';
+import { ProductCategory } from '@prisma/client';
 
 export class UpdateProductDto {
   @IsOptional()
-  @IsString()
-  category?: 'speaker' | 'instrument';
+  @IsEnum(ProductCategory)
+  category?: ProductCategory;
 
   @IsOptional()
   @IsString()

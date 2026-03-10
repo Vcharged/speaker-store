@@ -30,7 +30,7 @@ const ProductList = () => {
     const loadProducts = async () => {
       try {
         const response = await api.get('/products', {
-          params: filter !== 'all' ? { category: filter.toLowerCase() } : {}
+          params: filter !== 'all' ? { category: filter } : {},
         });
         setProducts(Array.isArray(response.data) ? response.data : []);
       } catch {
@@ -100,11 +100,13 @@ const ProductList = () => {
           >
             {/* Product Image */}
             <div className="relative h-48 sm:h-52 overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10">
-              <img 
-                src={getImageUrl(product.category, product.id, product.photoUrl)} 
-                alt={product.model} 
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-              />
+              <Link to={`/book/${product.id}`} aria-label={`Купить ${product.brand} ${product.model}`}>
+                <img 
+                  src={getImageUrl(product.category, product.id, product.photoUrl)} 
+                  alt={product.model} 
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 cursor-pointer"
+                />
+              </Link>
               <div className="absolute top-3 right-3">
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   product.isAvailable 
@@ -162,7 +164,7 @@ const ProductList = () => {
                     to={`/book/${product.id}`}
                     className="block w-full py-2 sm:py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-semibold text-center hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                   >
-                    Забронировать
+                    Купить
                   </Link>
                 ) : !user ? (
                   <div className="text-center">

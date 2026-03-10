@@ -3,7 +3,7 @@ import api from '../../lib/api';
 
 export type Product = {
   id: string;
-  category: 'speaker' | 'instrument';
+  category: 'SPEAKER' | 'INSTRUMENT';
   brand: string;
   model: string;
   description: string;
@@ -31,7 +31,7 @@ const AdminProductsDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
-  const [category, setCategory] = useState<'speaker' | 'instrument'>('speaker');
+  const [category, setCategory] = useState<'SPEAKER' | 'INSTRUMENT'>('SPEAKER');
   const [brand, setBrand] = useState('');
   const [model, setModel] = useState('');
   const [description, setDescription] = useState('');
@@ -57,7 +57,7 @@ const AdminProductsDashboard = () => {
         price,
       });
       // Reset form
-      setCategory('speaker');
+      setCategory('SPEAKER');
       setBrand('');
       setModel('');
       setDescription('');
@@ -84,7 +84,7 @@ const AdminProductsDashboard = () => {
       });
       setEditingProductId(null);
       // Reset form
-      setCategory('speaker');
+      setCategory('SPEAKER');
       setBrand('');
       setModel('');
       setDescription('');
@@ -125,7 +125,7 @@ const AdminProductsDashboard = () => {
 
   const cancelEdit = () => {
     setEditingProductId(null);
-    setCategory('speaker');
+    setCategory('SPEAKER');
     setBrand('');
     setModel('');
     setDescription('');
@@ -146,9 +146,9 @@ const AdminProductsDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 text-highlight">Категория:</label>
-            <select value={category} onChange={e => setCategory(e.target.value as 'speaker' | 'instrument')} className="border border-highlight rounded px-2 py-1 w-full">
-              <option value="speaker">Колонка</option>
-              <option value="instrument">Инструмент</option>
+            <select value={category} onChange={e => setCategory(e.target.value as 'SPEAKER' | 'INSTRUMENT')} className="border border-highlight rounded px-2 py-1 w-full">
+              <option value="SPEAKER">Колонка</option>
+              <option value="INSTRUMENT">Инструмент</option>
             </select>
           </div>
           <div>
@@ -205,7 +205,7 @@ const AdminProductsDashboard = () => {
               <img src={getImageUrl(product.category, product.brand, product.model, product.id, product.photoUrl)} alt={product.model} className="w-full h-48 object-cover mb-4 rounded-xl border border-gold" />
               <h3 className="text-xl font-bold text-highlight mb-1">{product.brand} {product.model}</h3>
               <p className="text-sm text-ink mb-2">{product.description}</p>
-              <span className="block mb-2 text-gold font-semibold">{product.category === 'speaker' ? 'Колонка' : 'Инструмент'}</span>
+              <span className="block mb-2 text-gold font-semibold">{product.category === 'SPEAKER' ? 'Колонка' : 'Инструмент'}</span>
               <span className="block mb-2 font-semibold text-accent">Цена: {Math.round(product.price * 0.8)} MDL</span>
               <span className={product.isAvailable ? 'text-green-600' : 'text-red-600 font-bold'}>
                 {product.isAvailable ? 'В наличии' : 'Нет в наличии'}

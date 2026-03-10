@@ -1,9 +1,5 @@
 import { IsString, IsOptional, IsNumber, IsEnum } from 'class-validator';
-
-export enum ProductCategory {
-  SPEAKER = 'speaker',
-  INSTRUMENT = 'instrument',
-}
+import { ProductCategory } from '@prisma/client';
 
 export class CreateProductDto {
   @IsEnum(ProductCategory)

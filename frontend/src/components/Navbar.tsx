@@ -24,6 +24,12 @@ const Navbar = () => {
             >
               Товары
             </Link>
+            <Link
+              to="/cart"
+              className="text-gray hover:text-primary font-medium transition-colors duration-200 hover:scale-105 transform"
+            >
+              Корзина
+            </Link>
             {user && (
               <>
                 <Link 
@@ -63,13 +69,13 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/login"
-                  className="px-3 sm:px-4 py-2 border-2 border-primary text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-200 transform hover:scale-105"
+                  className="px-3 sm:px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
                   Войти
                 </Link>
                 <Link 
                   to="/register"
-                  className="px-3 sm:px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-sm font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="px-3 sm:px-4 py-2 bg-white/95 text-dark border border-dark/10 rounded-full text-sm font-medium shadow-md hover:shadow-lg hover:bg-white transition-all duration-200 transform hover:scale-105"
                 >
                   Регистрация
                 </Link>

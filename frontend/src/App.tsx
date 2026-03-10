@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import MyBookings from './pages/MyBookings';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
+import Cart from './pages/Cart';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/cart" element={<Cart />} />
           <Route
             path="/bookings"
             element={
